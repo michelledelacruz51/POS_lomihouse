@@ -1,0 +1,1486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edwin's Lomi House | Restaurant POS</title>
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<section id="authScreen" class="auth-screen" aria-labelledby="authTitle">
+    <div class="auth-card">
+        <div class="auth-brand">
+            <div class="auth-logo">
+                <i class="fa-solid fa-utensils"></i>
+                <img class="logo-image" alt="">
+            </div>
+            <span>EDWIN'S LOMI HOUSE</span>
+        </div>
+
+        <div class="auth-heading">
+            <h1 id="authTitle">Welcome back</h1>
+            <p id="authSubtitle">Sign in to continue to your restaurant POS.</p>
+        </div>
+
+        <div class="auth-tabs" role="tablist" aria-label="Account access">
+            <button id="signInTab" class="auth-tab active" type="button" role="tab" aria-selected="true" aria-controls="signInForm" onclick="showAuthForm('signIn')">Sign In</button>
+            <button id="signUpTab" class="auth-tab" type="button" role="tab" aria-selected="false" aria-controls="signUpForm" onclick="showAuthForm('signUp')">Sign Up</button>
+        </div>
+
+        <form id="signInForm" class="auth-form" autocomplete="on">
+            <label for="signInEmail">Email address</label>
+            <input id="signInEmail" name="email" type="email" autocomplete="email" placeholder="you@example.com" required>
+
+            <label for="signInPassword">Password</label>
+            <input id="signInPassword" name="password" type="password" autocomplete="current-password" placeholder="Enter your password" required>
+
+            <button class="primary-btn auth-submit" type="submit">Sign In <i class="fa-solid fa-arrow-right"></i></button>
+        </form>
+
+        <form id="signUpForm" class="auth-form hidden" autocomplete="on">
+            <label for="signUpName">Full name</label>
+            <input id="signUpName" name="name" type="text" autocomplete="name" placeholder="Your name" maxlength="80" required>
+
+            <label for="signUpEmail">Email address</label>
+            <input id="signUpEmail" name="email" type="email" autocomplete="email" placeholder="you@example.com" required>
+
+            <label for="signUpPassword">Password</label>
+            <input id="signUpPassword" name="password" type="password" autocomplete="new-password" minlength="8" placeholder="At least 8 characters" required>
+
+            <label for="signUpPasswordConfirm">Confirm password</label>
+            <input id="signUpPasswordConfirm" name="passwordConfirm" type="password" autocomplete="new-password" minlength="8" placeholder="Re-enter your password" required>
+
+            <button class="primary-btn auth-submit" type="submit">Create Account <i class="fa-solid fa-arrow-right"></i></button>
+        </form>
+
+        <p id="authMessage" class="auth-message" role="status" aria-live="polite"></p>
+        <p class="auth-footnote">Secure sign-in powered by Supabase.</p>
+    </div>
+</section>
+
+<div class="app">
+
+    <!-- ================= SIDEBAR ================= -->
+    <aside class="sidebar">
+
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fa-solid fa-utensils"></i>
+                <img class="logo-image" alt="Edwin's Lomi House logo">
+            </div>
+
+            <div>
+                <h2>Edwin's Lomi House</h2>
+                <span>Restaurant POS</span>
+            </div>
+        </div>
+
+        <div class="menu-title">MAIN MENU</div>
+
+        <nav>
+
+            <button class="nav-item active" onclick="showPage('dashboard', this)">
+                <i class="fa-solid fa-chart-line"></i>
+                <span>Dashboard</span>
+            </button>
+
+            <button class="nav-item" onclick="showPage('pos', this)">
+                <i class="fa-solid fa-cash-register"></i>
+                <span>New Order</span>
+            </button>
+
+            <button class="nav-item" onclick="showPage('orders', this)">
+                <i class="fa-solid fa-receipt"></i>
+                <span>Orders</span>
+            </button>
+
+            <button class="nav-item" onclick="showPage('kitchen', this)">
+                <i class="fa-solid fa-kitchen-set"></i>
+                <span>Kitchen</span>
+                <b id="kitchenNotification" class="notification">0</b>
+            </button>
+
+            <button class="nav-item" onclick="showPage('inventory', this)">
+                <i class="fa-solid fa-boxes-stacked"></i>
+                <span>Inventory</span>
+            </button>
+
+            <button class="nav-item" onclick="showPage('products', this)">
+                <i class="fa-solid fa-bowl-food"></i>
+                <span>Products</span>
+            </button>
+
+            <button class="nav-item" onclick="showPage('reports', this)">
+                <i class="fa-solid fa-chart-column"></i>
+                <span>Sales & Reports</span>
+            </button>
+
+        </nav>
+
+        <div class="menu-title">SYSTEM</div>
+
+        <nav>
+
+            <button class="nav-item" onclick="showPage('staff', this)">
+                <i class="fa-solid fa-users"></i>
+                <span>Staff</span>
+            </button>
+
+            <button class="nav-item" onclick="showPage('settings', this)">
+                <i class="fa-solid fa-gear"></i>
+                <span>Settings</span>
+            </button>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <div class="user-mini">
+                <div class="avatar">JD</div>
+
+                <div>
+                    <strong>Jane Doe</strong>
+                    <small>Administrator</small>
+                </div>
+
+                <i class="fa-solid fa-ellipsis"></i>
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- ================= MAIN CONTENT ================= -->
+    <main class="main">
+
+        <!-- HEADER -->
+        <header class="header">
+
+            <div>
+                <h1 id="pageTitle">Dashboard</h1>
+                <p id="pageSubtitle">Welcome back! Here's today's overview.</p>
+            </div>
+
+            <div class="header-right">
+
+                <div class="date">
+                    <i class="fa-regular fa-calendar"></i>
+                    <span id="currentDate"></span>
+                </div>
+
+                <div class="notification-center">
+                    <button id="notificationButton" class="icon-button" type="button" aria-label="Notifications" aria-expanded="false" aria-controls="notificationPanel">
+                        <i class="fa-regular fa-bell"></i>
+                        <span id="notificationCount" class="notification-badge hidden"></span>
+                    </button>
+                    <section id="notificationPanel" class="notification-panel hidden" aria-label="Notifications">
+                        <div class="notification-panel-header">
+                            <strong>Notifications</strong>
+                            <button id="markNotificationsRead" class="text-button" type="button">Mark all as read</button>
+                        </div>
+                        <div id="notificationList" class="notification-list"></div>
+                    </section>
+                </div>
+
+                <button class="profile profile-button" type="button" onclick="openAccountSwitcher()">
+                    <div class="avatar">JD</div>
+
+                    <div>
+                        <strong>Jane Doe</strong>
+                        <small>Admin</small>
+                    </div>
+
+                    <i class="fa-solid fa-chevron-down"></i>
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <!-- ================================================= -->
+        <!-- DASHBOARD -->
+        <!-- ================================================= -->
+
+        <section id="dashboard" class="page active-page">
+
+            <div class="stats-grid">
+
+                <div class="stat-card">
+
+                    <div class="stat-icon orange">
+                        <i class="fa-solid fa-peso-sign"></i>
+                    </div>
+
+                    <div class="stat-info">
+                        <span>Today's Sales</span>
+                        <h2 id="dashboardTodaySales">₱0.00</h2>
+                        <small id="dashboardSalesChange">
+                            <i class="fa-solid fa-arrow-up"></i>
+                            No data yet
+                        </small>
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon green">
+                        <i class="fa-solid fa-receipt"></i>
+                    </div>
+
+                    <div class="stat-info">
+                        <span>Total Orders</span>
+                        <h2 id="totalOrdersCount">87</h2>
+                        <small id="dashboardOrdersChange">
+                            <i class="fa-solid fa-arrow-up"></i>
+                            No data yet
+                        </small>
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon blue">
+                        <i class="fa-solid fa-utensils"></i>
+                    </div>
+
+                    <div class="stat-info">
+                        <span>Completed Orders</span>
+                        <h2 id="dashboardCompletedOrders">0</h2>
+                        <small id="dashboardCompletionRate">No data yet</small>
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon red">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    </div>
+
+                    <div class="stat-info">
+                        <span>Low Stock Items</span>
+                        <h2 id="dashboardLowStock">0</h2>
+                        <small class="negative">Needs attention</small>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="dashboard-grid">
+
+                <!-- SALES CHART -->
+                <div class="card chart-card">
+
+                    <div class="card-header">
+
+                        <div>
+                            <h3>Sales Overview</h3>
+                            <p>Sales performance for this week</p>
+                        </div>
+
+                        <select>
+                            <option>This Week</option>
+                            <option>This Month</option>
+                            <option>This Year</option>
+                        </select>
+
+                    </div>
+
+                    <div class="chart">
+
+                        <div class="chart-y">
+                            <span>₱10k</span>
+                            <span>₱8k</span>
+                            <span>₱6k</span>
+                            <span>₱4k</span>
+                            <span>₱2k</span>
+                            <span>₱0</span>
+                        </div>
+
+                        <div class="chart-area">
+
+                            <div id="dashboardSalesBars" class="bars">
+
+                                <div class="bar-container">
+                                    <div class="bar" style="height:45%"></div>
+                                    <span>Mon</span>
+                                </div>
+
+                                <div class="bar-container">
+                                    <div class="bar" style="height:65%"></div>
+                                    <span>Tue</span>
+                                </div>
+
+                                <div class="bar-container">
+                                    <div class="bar" style="height:52%"></div>
+                                    <span>Wed</span>
+                                </div>
+
+                                <div class="bar-container">
+                                    <div class="bar" style="height:80%"></div>
+                                    <span>Thu</span>
+                                </div>
+
+                                <div class="bar-container">
+                                    <div class="bar" style="height:70%"></div>
+                                    <span>Fri</span>
+                                </div>
+
+                                <div class="bar-container">
+                                    <div class="bar today" style="height:90%"></div>
+                                    <span>Sat</span>
+                                </div>
+
+                                <div class="bar-container">
+                                    <div class="bar" style="height:60%"></div>
+                                    <span>Sun</span>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- TOP PRODUCTS -->
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <div>
+                            <h3>Top Selling Products</h3>
+                            <p>Today's best sellers</p>
+                        </div>
+
+                        <button class="text-button">View All</button>
+
+                    </div>
+
+                    <div id="dashboardTopProducts" class="product-ranking">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- RECENT ORDERS -->
+
+            <div class="card">
+
+                <div class="card-header">
+
+                    <div>
+                        <h3>Recent Orders</h3>
+                        <p>Latest transactions</p>
+                    </div>
+
+                    <button class="text-button" onclick="showPage('orders')">
+                        View All
+                    </button>
+
+                </div>
+
+                <div class="table-wrapper">
+
+                    <table>
+
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Table</th>
+                                <th>Products</th>
+                                <th>Total</th>
+                                <th>Payment</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="dashboardRecentOrders"></tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================================================= -->
+        <!-- POS -->
+        <!-- ================================================= -->
+
+        <section id="pos" class="page">
+
+            <div class="pos-layout">
+
+                <div class="menu-section">
+
+                    <div class="pos-top">
+
+                        <div class="order-type">
+
+                            <button class="type-btn active" data-order-type="dinein">
+                                <i class="fa-solid fa-chair"></i>
+                                Dine-in
+                            </button>
+
+                            <button class="type-btn" data-order-type="takeout">
+                                <i class="fa-solid fa-bag-shopping"></i>
+                                Takeout
+                            </button>
+
+                            <button class="type-btn" data-order-type="delivery">
+                                <i class="fa-solid fa-motorcycle"></i>
+                                Delivery
+                            </button>
+
+                        </div>
+
+                        <div class="table-select">
+                            <label>Table</label>
+                            <select>
+                                <option>Table 1</option>
+                                <option>Table 2</option>
+                                <option>Table 3</option>
+                                <option>Table 4</option>
+                                <option>Table 5</option>
+                            </select>
+                        </div>
+
+                        <div id="deliveryChannelWrap" class="delivery-channel hidden">
+                            <div class="delivery-field">
+                                <label for="deliveryChannelSelect">Delivery App</label>
+                                <select id="deliveryChannelSelect">
+                                    <option value="Grab">Grab</option>
+                                    <option value="Foodpanda">Foodpanda</option>
+                                </select>
+                            </div>
+                            <div class="delivery-field">
+                                <label for="deliveryOrderNumber">Order Number</label>
+                                <input id="deliveryOrderNumber" type="text" placeholder="Enter order number" autocomplete="off">
+                            </div>
+                            <div class="delivery-field">
+                                <label for="deliveryFeeInput">Delivery Fee</label>
+                                <input id="deliveryFeeInput" type="number" min="0" step="0.01" value="0" aria-label="Delivery fee">
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="category-list">
+
+                        <button class="category active">All</button>
+                        <button class="category">Lomi</button>
+                        <button class="category">Canton Bihon</button>
+                        <button class="category">Sizzling With Rice</button>
+                        <button class="category">Silog</button>
+                        <button class="category">Guisado</button>
+                        <button class="category">Pulutan</button>
+                        <button class="category">Chami</button>
+                        <button class="category">Add Ons</button>
+                        <button class="category">Drinks</button>
+
+                    </div>
+
+                    <div class="search-box product-search-box">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input id="posProductSearch" type="search" placeholder="Search menu products..." aria-label="Search menu products">
+                    </div>
+
+
+                    <div class="food-grid">
+
+                    </div>
+
+                </div>
+
+
+                <!-- ORDER PANEL -->
+
+                <div class="order-panel">
+
+                    <div class="order-header">
+
+                        <div>
+                            <span>Current Order</span>
+                            <h2 id="currentOrderNumber">#1028</h2>
+                        </div>
+
+                        <button class="clear-btn" onclick="clearOrder()">
+                            Clear
+                        </button>
+
+                    </div>
+
+
+                    <div id="orderItems" class="order-items">
+
+                        <div class="empty-order">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                            <h3>No items yet</h3>
+                            <p>Select products to add them to the order.</p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="order-summary">
+
+                        <div>
+                            <span>Subtotal</span>
+                            <strong id="subtotal">₱0.00</strong>
+                        </div>
+
+                        <div>
+                            <span>Discount</span>
+                            <strong>₱0.00</strong>
+                        </div>
+
+                        <div class="total">
+                            <span>Total</span>
+                            <strong id="total">₱0.00</strong>
+                        </div>
+
+                        <button class="payment-btn" onclick="openPaymentModal()">
+                            Proceed to Payment
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================================================= -->
+        <!-- ORDERS -->
+        <!-- ================================================= -->
+
+        <section id="orders" class="page">
+
+            <div class="page-actions">
+
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Search order...">
+                </div>
+
+                <select class="filter">
+                    <option>All Orders</option>
+                    <option>New</option>
+                    <option>Completed</option>
+                    <option>Preparing</option>
+                    <option>Cancelled</option>
+                </select>
+
+                <button class="clear-btn" type="button" onclick="clearPastOrders()">
+                    Remove All Orders
+                </button>
+
+                <button class="primary-btn" type="button" onclick="refreshAllOrders()">
+                    <i class="fa-solid fa-rotate"></i>
+                    Refresh Orders
+                </button>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="card-header">
+
+                    <div>
+                        <h3>Order Management</h3>
+                        <p>Manage all restaurant orders</p>
+                    </div>
+
+                    <button class="primary-btn" onclick="showPage('pos')">
+                        <i class="fa-solid fa-plus"></i>
+                        New Order
+                    </button>
+
+                </div>
+
+
+                <div class="table-wrapper">
+
+                    <table>
+
+                        <thead>
+                            <tr>
+                                <th>Order</th>
+                                <th>Type</th>
+                                <th>Table</th>
+                                <th>Products</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="ordersTableBody">
+
+                            <tr>
+                                <td><strong>#1025</strong></td>
+                                <td>Dine-in</td>
+                                <td>Table 5</td>
+                                <td>Lomi Regular, Coke Mismo, Fried Rice</td>
+                                <td>₱370.00</td>
+                                <td><span class="status completed">Completed</span></td>
+                                <td><button class="small-btn orders-view-btn" type="button">View</button></td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>#1024</strong></td>
+                                <td>Dine-in</td>
+                                <td>Table 2</td>
+                                <td>Lomi Special, Sprite</td>
+                                <td>₱280.00</td>
+                                <td><span class="status preparing">Preparing</span></td>
+                                <td><button class="small-btn orders-view-btn" type="button">View</button></td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>#1023</strong></td>
+                                <td>Takeout</td>
+                                <td>—</td>
+                                <td>Chami Tamis Anghang, Plain Rice</td>
+                                <td>₱520.00</td>
+                                <td><span class="status completed">Completed</span></td>
+                                <td><button class="small-btn orders-view-btn" type="button">View</button></td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>#1022</strong></td>
+                                <td>Delivery</td>
+                                <td>—</td>
+                                <td>Sizzling Chicken, Coke Kasalo</td>
+                                <td>₱240.00</td>
+                                <td><span class="status cancelled">Cancelled</span></td>
+                                <td><button class="small-btn orders-view-btn" type="button">View</button></td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================================================= -->
+        <!-- KITCHEN -->
+        <!-- ================================================= -->
+
+        <section id="kitchen" class="page">
+
+            <div class="kitchen-top">
+
+                <div class="kitchen-status">
+                    <span class="online-dot"></span>
+                    Kitchen Online
+                </div>
+
+            </div>
+
+
+            <div class="kitchen-columns">
+
+                    <div class="kitchen-column">
+
+                    <div class="column-title new">
+                        <span>NEW ORDERS</span>
+                        <b id="newKitchenCount">0</b>
+                    </div>
+
+
+                    <div id="newKitchenOrders">
+
+                    <div class="kitchen-card" data-order-id="#1026">
+
+                        <div class="kitchen-card-header">
+                            <div>
+                                <strong>#1026</strong>
+                                <span>Table 3</span>
+                            </div>
+
+                            <small>2 min ago</small>
+                        </div>
+
+                        <div class="kitchen-items">
+                            <p><b>2×</b> Lomi Regular</p>
+                            <p><b>1×</b> Coke Mismo</p>
+                            <p><b>1×</b> Fried Rice</p>
+                        </div>
+
+                        <div class="special">
+                            <i class="fa-solid fa-note-sticky"></i>
+                            No onions
+                        </div>
+
+                        <button class="accept-btn">
+                            Accept Order
+                        </button>
+
+                    </div>
+
+
+                    <div class="kitchen-card" data-order-id="#1027">
+
+                        <div class="kitchen-card-header">
+                            <div>
+                                <strong>#1027</strong>
+                                <span>Table 7</span>
+                            </div>
+
+                            <small>4 min ago</small>
+                        </div>
+
+                        <div class="kitchen-items">
+                            <p><b>1×</b> Burger</p>
+                            <p><b>2×</b> Sprite</p>
+                        </div>
+
+                        <button class="accept-btn">
+                            Accept Order
+                        </button>
+
+                    </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="kitchen-column">
+
+                    <div class="column-title preparing-title">
+                        <span>PREPARING</span>
+                        <b id="preparingKitchenCount">0</b>
+                    </div>
+
+                    <div id="preparingKitchenOrders"></div>
+
+
+                    <div class="kitchen-card" data-order-id="#1024">
+
+                        <div class="kitchen-card-header">
+                            <div>
+                                <strong>#1024</strong>
+                                <span>Table 2</span>
+                            </div>
+
+                            <small>8 min</small>
+                        </div>
+
+                        <div class="kitchen-items">
+                            <p><b>2×</b> Lomi Regular</p>
+                            <p><b>1×</b> Plain Rice</p>
+                        </div>
+
+                        <div class="progress">
+                            <div></div>
+                        </div>
+
+                        <button class="ready-btn">
+                            Mark as Ready
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="kitchen-column">
+
+                    <div class="column-title ready-title">
+                        <span>READY</span>
+                        <b id="readyKitchenCount">0</b>
+                    </div>
+
+                    <div id="readyKitchenOrders"></div>
+
+
+                    <div class="kitchen-card" data-order-id="#1021">
+
+                        <div class="kitchen-card-header">
+                            <div>
+                                <strong>#1021</strong>
+                                <span>Table 4</span>
+                            </div>
+
+                            <small>12 min</small>
+                        </div>
+
+                        <div class="kitchen-items">
+                            <p><b>1×</b> Sizzling Chicken</p>
+                            <p><b>1×</b> Burger</p>
+                        </div>
+
+                        <button class="served-btn">
+                            Mark as Served
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================================================= -->
+        <!-- INVENTORY -->
+        <!-- ================================================= -->
+
+        <section id="inventory" class="page">
+
+            <div class="inventory-stats">
+
+                <div class="inventory-stat">
+                    <i class="fa-solid fa-box"></i>
+                    <div>
+                        <span>Total Items</span>
+                        <strong id="inventoryTotalItems">42</strong>
+                    </div>
+                </div>
+
+                <div class="inventory-stat warning">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    <div>
+                        <span>Low Stock</span>
+                        <strong>5</strong>
+                    </div>
+                </div>
+
+                <div class="inventory-stat danger">
+                    <i class="fa-solid fa-circle-xmark"></i>
+                    <div>
+                        <span>Out of Stock</span>
+                        <strong>2</strong>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="card-header">
+
+                    <div>
+                        <h3>Inventory & Stock Monitoring</h3>
+                        <p>Monitor estimated one-month ingredient stock levels for the menu.</p>
+                    </div>
+
+                    <div class="search-box inventory-search-box">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input id="inventorySearch" type="search" placeholder="Search ingredients..." aria-label="Search ingredients">
+                    </div>
+
+                    <button class="primary-btn" type="button" onclick="openInventoryEditor()">
+                        <i class="fa-solid fa-plus"></i>
+                        Add Item
+                    </button>
+                    <button class="clear-btn" type="button" onclick="removeAllInventoryItems()">
+                        Remove All Items
+                    </button>
+
+                </div>
+
+
+                <div class="table-wrapper">
+
+                    <table>
+
+                        <thead>
+                            <tr>
+                                <th>Ingredient</th>
+                                <th>Category</th>
+                                <th>Stock</th>
+                                <th>Unit</th>
+                                <th>Reorder Level</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="inventoryTableBody"></tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================================================= -->
+        <!-- PRODUCTS -->
+        <!-- ================================================= -->
+
+        <section id="products" class="page">
+
+            <div class="page-actions">
+
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input id="productManagementSearch" type="search" placeholder="Search products..." aria-label="Search products">
+                </div>
+
+                <button class="primary-btn" type="button" onclick="openNewProductEditor()">
+                    <i class="fa-solid fa-plus"></i>
+                    Add Product
+                </button>
+
+            </div>
+
+
+            <div class="food-grid product-management">
+
+            </div>
+
+        </section>
+
+
+        <!-- ================================================= -->
+        <!-- STAFF -->
+        <!-- ================================================= -->
+
+        <section id="staff" class="page">
+            <div class="settings-header">
+                <button class="primary-btn" type="button" onclick="openStaffEditor()">
+                    <i class="fa-solid fa-plus"></i>
+                    Add Staff
+                </button>
+            </div>
+
+            <div class="card">
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Role</th>
+                                <th>Contact</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="staffTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================================================= -->
+        <!-- SETTINGS -->
+        <!-- ================================================= -->
+
+        <section id="settings" class="page">
+
+            <div class="settings-header">
+
+                <div>
+                    <h2>POS Settings</h2>
+                    <p>Configure system preferences for orders, payments, receipts, inventory, and kitchen flow.</p>
+                </div>
+
+                <button class="primary-btn" type="button" onclick="saveSettings()">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    Save Changes
+                </button>
+
+            </div>
+
+            <div class="settings-grid">
+
+                <div class="settings-card">
+                    <h3>Restaurant Logo</h3>
+                    <div class="logo-upload">
+                        <div id="logoUploadPreview" class="logo-upload-preview" aria-hidden="true">
+                            <i class="fa-solid fa-utensils"></i>
+                            <img class="logo-image" alt="">
+                        </div>
+                        <div class="logo-upload-control">
+                            <label for="restaurantLogoInput">Choose a logo image</label>
+                            <input id="restaurantLogoInput" type="file" accept="image/*">
+                            <small id="logoUploadStatus" role="status" aria-live="polite">Your logo is saved in this browser.</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-card">
+                    <h3>Order Settings</h3>
+
+                    <label class="toggle-row" data-setting="dinein">
+                        <span>Enable Dine-in</span>
+                        <input type="checkbox" checked data-setting="dinein">
+                    </label>
+
+                    <label class="toggle-row" data-setting="takeout">
+                        <span>Enable Takeout</span>
+                        <input type="checkbox" checked data-setting="takeout">
+                    </label>
+
+                    <label class="toggle-row" data-setting="delivery">
+                        <span>Enable Delivery</span>
+                        <input type="checkbox" checked data-setting="delivery">
+                    </label>
+
+                    <label class="toggle-row" data-setting="foodpanda">
+                        <span>Foodpanda</span>
+                        <input type="checkbox" data-setting="foodpanda">
+                    </label>
+
+                    <label class="toggle-row" data-setting="grabfood">
+                        <span>GrabFood</span>
+                        <input type="checkbox" data-setting="grabfood">
+                    </label>
+                </div>
+
+                <div class="settings-card">
+                    <h3>Payment Settings</h3>
+
+                    <label class="toggle-row">
+                        <span>Cash</span>
+                        <input type="checkbox" checked>
+                    </label>
+
+                    <label class="toggle-row">
+                        <span>GCash</span>
+                        <input type="checkbox" checked>
+                    </label>
+                </div>
+
+                <div class="settings-card">
+                    <h3>Receipt Settings</h3>
+
+                    <label class="toggle-row">
+                        <span>Show receipt</span>
+                        <input type="checkbox" checked>
+                    </label>
+
+                    <label class="toggle-row">
+                        <span>Print receipt automatically</span>
+                        <input type="checkbox">
+                    </label>
+                </div>
+
+                <div class="settings-card">
+                    <h3>Inventory Settings</h3>
+
+                    <label class="toggle-row">
+                        <span>Low-stock alert</span>
+                        <input type="checkbox" checked>
+                    </label>
+
+                    <label class="toggle-row">
+                        <span>Automatic stock deduction</span>
+                        <input type="checkbox" checked>
+                    </label>
+                </div>
+
+                <div class="settings-card">
+                    <h3>Kitchen Settings</h3>
+
+                    <label class="toggle-row">
+                        <span>Automatically send orders to kitchen</span>
+                        <input type="checkbox" checked>
+                    </label>
+
+                    <div class="status-flow">
+                        <span>Order status</span>
+                        <div class="status-pills">
+                            <span>New</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                            <span>Preparing</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                            <span>Ready</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- ================================================= -->
+        <!-- REPORTS -->
+        <!-- ================================================= -->
+
+        <section id="reports" class="page">
+
+            <div class="report-header">
+
+                <div class="report-filter">
+                    <select>
+                        <option>Today</option>
+                        <option>This Week</option>
+                        <option>This Month</option>
+                        <option>This Year</option>
+                    </select>
+
+                    <button id="exportSalesReport" class="primary-btn" type="button">
+                        <i class="fa-solid fa-download"></i>
+                        Export
+                    </button>
+                </div>
+
+            </div>
+
+
+            <div class="report-cards">
+
+                <div class="report-card">
+                    <span>Total Sales</span>
+                    <h2 id="reportTotalSales">₱0.00</h2>
+                    <small id="reportSalesNote">No data yet</small>
+                </div>
+
+                <div class="report-card">
+                    <span>Total Orders</span>
+                    <h2 id="reportTotalOrders">0</h2>
+                    <small id="reportOrdersNote">No data yet</small>
+                </div>
+
+                <div class="report-card">
+                    <span>Average Order</span>
+                    <h2 id="reportAverageOrder">₱0.00</h2>
+                    <small id="reportAverageOrderNote">No data yet</small>
+                </div>
+
+                <div class="report-card">
+                    <span>Cancelled</span>
+                    <h2 id="reportCancelledOrders">0</h2>
+                    <small id="reportCancelledNote">No data yet</small>
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="card-header">
+
+                    <div>
+                        <h3>Sales Report</h3>
+                        <p>Daily sales summary</p>
+                    </div>
+
+                </div>
+
+                <div class="table-wrapper">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+                                <th>Date</th>
+                                <th>Total Orders</th>
+                                <th>Completed</th>
+                                <th>Cancelled</th>
+                                <th>Total Sales</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="salesReportBody"></tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+            <div class="card report-transactions-card">
+
+                <div class="card-header">
+
+                    <div>
+                        <h3>Order Transactions</h3>
+                        <p>Complete transaction history</p>
+                    </div>
+
+                </div>
+
+                <div class="table-wrapper">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Date</th>
+                                <th>Products</th>
+                                <th>Payment</th>
+                                <th>Status</th>
+                                <th>Total</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="salesTransactionsBody"></tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+<div id="inventoryEditorModal" class="payment-modal hidden" aria-hidden="true">
+    <div class="payment-modal-content product-editor-content" role="dialog" aria-modal="true" aria-labelledby="inventoryEditorTitle">
+        <div class="payment-modal-header">
+            <h3 id="inventoryEditorTitle">Add Inventory Item</h3>
+            <button class="close-payment" aria-label="Close inventory editor" onclick="closeInventoryEditor()">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <div class="product-editor-form">
+            <label>
+                Ingredient
+                <input id="inventoryNameInput" type="text">
+            </label>
+            <label>
+                Category
+                <input id="inventoryCategoryInput" type="text" placeholder="Meat, Dairy, Supplies...">
+            </label>
+            <label>
+                Stock quantity
+                <input id="inventoryStockInput" type="number" min="0" step="0.01">
+            </label>
+            <label>
+                Unit
+                <input id="inventoryUnitInput" type="text" placeholder="kg, liter, piece...">
+            </label>
+            <label>
+                Reorder level
+                <input id="inventoryReorderInput" type="number" min="0" step="0.01">
+            </label>
+        </div>
+
+        <div class="payment-modal-actions">
+            <button class="secondary-btn" type="button" onclick="closeInventoryEditor()">Cancel</button>
+            <button class="primary-btn" type="button" onclick="saveInventoryItem()">Add Item</button>
+        </div>
+    </div>
+</div>
+
+<div id="staffEditorModal" class="payment-modal hidden" aria-hidden="true">
+    <div class="payment-modal-content product-editor-content" role="dialog" aria-modal="true" aria-labelledby="staffEditorTitle">
+        <div class="payment-modal-header">
+            <h3 id="staffEditorTitle">Add Staff</h3>
+            <button class="close-payment" aria-label="Close staff editor" onclick="closeStaffEditor()">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <div class="product-editor-form">
+            <label>Name<input id="staffNameInput" type="text"></label>
+            <label>Role<input id="staffRoleInput" type="text" placeholder="Cashier, Kitchen Staff..."></label>
+            <label>Email<input id="staffContactInput" type="email" placeholder="name@example.com"></label>
+            <label class="product-availability-toggle">
+                <span>Active staff member</span>
+                <input id="staffActiveInput" type="checkbox" checked>
+            </label>
+        </div>
+        <div class="payment-modal-actions">
+            <button class="secondary-btn" type="button" onclick="closeStaffEditor()">Cancel</button>
+            <button class="primary-btn" type="button" onclick="saveStaffMember()">Add Staff</button>
+        </div>
+    </div>
+</div>
+
+<div id="accountSwitcherModal" class="payment-modal hidden" aria-hidden="true">
+    <div class="payment-modal-content account-switcher-content" role="dialog" aria-modal="true" aria-labelledby="accountSwitcherTitle">
+        <div class="payment-modal-header">
+            <h3 id="accountSwitcherTitle">Switch Account</h3>
+            <button class="close-payment" aria-label="Close account switcher" onclick="closeAccountSwitcher()">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <p class="account-switcher-help">Choose an active cashier or administrator account.</p>
+        <div id="accountOptions" class="account-options"></div>
+        <button class="secondary-btn auth-sign-out" type="button" onclick="signOut()">Sign Out</button>
+    </div>
+</div>
+
+<div id="settingsSavedToast" class="settings-toast hidden" role="status" aria-live="polite">
+    <i class="fa-solid fa-circle-check"></i>
+    Settings saved successfully
+</div>
+
+<div id="paymentModal" class="payment-modal hidden" aria-hidden="true">
+    <div class="payment-modal-content" role="dialog" aria-modal="true" aria-labelledby="paymentTitle">
+        <div class="payment-modal-header">
+            <h3 id="paymentTitle">Select Payment Method</h3>
+            <button class="close-payment" aria-label="Close payment modal" onclick="closePaymentModal()">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <div class="payment-options">
+            <button class="payment-option active" type="button" data-payment="Cash">
+                <div class="payment-icon">
+                    <i class="fa-solid fa-money-bill-wave"></i>
+                </div>
+                <span>Cash</span>
+            </button>
+
+            <button class="payment-option" type="button" data-payment="GCash QR">
+                <div class="payment-icon qr-icon">
+                    <span>QR</span>
+                </div>
+                <span>GCash QR</span>
+            </button>
+        </div>
+
+        <div class="payment-modal-actions">
+            <button class="secondary-btn" type="button" onclick="closePaymentModal()">Cancel</button>
+            <button class="primary-btn" type="button" id="confirmPaymentBtn">Confirm Payment</button>
+        </div>
+    </div>
+</div>
+
+<div id="receiptModal" class="payment-modal hidden" aria-hidden="true">
+    <div class="receipt-modal-content" role="dialog" aria-modal="true" aria-labelledby="receiptTitle">
+        <div class="payment-modal-header">
+            <h3 id="receiptTitle">Receipt</h3>
+            <button class="close-payment" aria-label="Close receipt modal" onclick="closeReceiptModal()">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <div id="receiptContent" class="receipt-content"></div>
+
+        <div class="payment-modal-actions">
+            <button class="secondary-btn" type="button" onclick="printReceipt()">Print</button>
+            <button class="primary-btn" type="button" onclick="closeReceiptModal()">Close</button>
+        </div>
+    </div>
+</div>
+
+<div id="orderViewModal" class="payment-modal hidden" aria-hidden="true">
+    <div class="payment-modal-content order-view-content" role="dialog" aria-modal="true" aria-labelledby="orderViewTitle">
+        <div class="payment-modal-header">
+            <h3 id="orderViewTitle">Order Details</h3>
+            <button class="close-payment" aria-label="Close order details" onclick="closeOrderView()">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <div id="orderViewContent" class="order-view-details"></div>
+        <div class="payment-modal-actions">
+            <button class="primary-btn" type="button" onclick="closeOrderView()">Close</button>
+        </div>
+    </div>
+</div>
+
+<div id="productEditorModal" class="payment-modal hidden" aria-hidden="true">
+    <div class="payment-modal-content product-editor-content" role="dialog" aria-modal="true" aria-labelledby="productEditorTitle">
+        <div class="payment-modal-header">
+            <h3 id="productEditorTitle">Edit Product</h3>
+            <button class="close-payment" aria-label="Close product editor" onclick="closeProductEditor()">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <div class="product-editor-form">
+            <label>
+                Product name
+                <input id="productNameInput" type="text">
+            </label>
+            <label>
+                Price
+                <input id="productPriceInput" type="number" min="0" step="0.01">
+            </label>
+            <label>
+                Category
+                <select id="productCategoryInput">
+                    <option>Lomi</option>
+                    <option>Canton Bihon</option>
+                    <option>Sizzling With Rice</option>
+                    <option>Silog</option>
+                    <option>Guisado</option>
+                    <option>Pulutan</option>
+                    <option>Chami</option>
+                    <option>Add Ons</option>
+                    <option>Drinks</option>
+                </select>
+            </label>
+            <label>
+                Product photo
+                <input id="productImageInput" type="file" accept="image/*">
+            </label>
+            <label>
+                Description
+                <input id="productDescriptionInput" type="text">
+            </label>
+            <label>
+                Ingredients per serving
+                <textarea id="productRecipeInput" rows="5" placeholder="Lomi Noodles: 0.15&#10;Eggs: 1"></textarea>
+                <small class="product-recipe-help">Enter one ingredient per line as name: amount. Use the same unit shown in Inventory. Recipes are required for automatic stock deduction.</small>
+            </label>
+            <label class="product-availability-toggle">
+                <span>Available for new orders</span>
+                <input id="productAvailableInput" type="checkbox">
+            </label>
+        </div>
+
+        <div class="payment-modal-actions">
+            <button class="secondary-btn" type="button" onclick="closeProductEditor()">Cancel</button>
+            <button class="primary-btn" type="button" onclick="saveProductChanges()">Save Product</button>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script src="backend.js"></script>
+<script src="script.js"></script>
+<script src="auth.js"></script>
+
+</body>
+</html>
